@@ -20,11 +20,11 @@ public class LibraryService : ILibraryService
 
         if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author))
         {
-            throw new ArgumentNullException("Title and author is needed.");
+            throw new ArgumentException("Title and author is needed.");
         }
         if (_repository.GetByISBN(isbn) is not null)
         {
-            throw new ArgumentNullException("A book with this isb number already exists.");
+            throw new ArgumentException("A book with this isb number already exists.");
         }
         var book = new Book(title, author, isbn, category);
         _repository.AddBook(book);
@@ -49,7 +49,7 @@ public class LibraryService : ILibraryService
         // 2. Om boken inte finns: kasta ett undantag eller gör inget
         if (book == null)
         {
-            throw new ArgumentNullException($"Book with isbn: {isbn} does not exists.");
+            throw new ArgumentException($"Book with ISBN: {isbn} does not exists.");
         }
         // 3. Om boken finns och är tillgänglig:
         if (book.IsAvailable)
@@ -68,7 +68,7 @@ public class LibraryService : ILibraryService
         // 2. Om boken inte finns: kasta ett undantag eller gör inget
         if (book == null)
         {
-            throw new ArgumentNullException($"Book with isb: {isbn} does not exsist.");
+            throw new ArgumentException($"Book with isb: {isbn} does not exsist.");
         }
         // 3. Om boken finns:
         //    a) Sätt IsAvailable = true
@@ -79,35 +79,24 @@ public class LibraryService : ILibraryService
 
     public void RemoveBook(string identifier)
     {
-        // 1. Försök tolka identifier som ISBN först: _repository.GetByISBN(...)
-        var book = new Book();
-
         var bookList = _repository.GetAllBooks();
-        foreach (var b in bookList)
+        var bookToRemove = bookList
+            .FirstOrDefault(b => b.Title.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+                                 b.Author.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+                                 b.ISBN.Equals(identifier, StringComparison.OrdinalIgnoreCase));
+        if (bookToRemove is null)
         {
-            if (identifier == b.Title || identifier == b.Author || identifier == b.ISBN)
-            {
-                book = b;
-                break;
-            }
+            throw new ArgumentException($"No book was found with identifier: {identifier}");
+            // Eller returnera ett resultatobjekt om du inte vill kasta.
         }
-        var bookToRemove = bookList.FirstOrDefault(b => b.Title == identifier ||
-                                                        b.Author == identifier ||
-                                                        b.ISBN == identifier);
-
-
-        // 2. Om boken finns, ta bort den
-        // 3. Annars: sök bland alla böcker efter match på titel (case insensitive)
-        // 4. Om en match hittas, ta bort den
-        // 5. Om inget hittas: gör inget eller kasta undantag
-        _repository.RemoveBook(book);
+        _repository.RemoveBook(bookToRemove);
     }
 
     IEnumerable<Book> ILibraryService.SearchBooks(string query)
     {
-        // 1. Anropa _repository.Search(query)
-        // 2. Returnera resultatet (filtrerat på titel/författare i repository)
-        throw new NotImplementedException();
+        return _repository.GetAllBooks()
+            .Where(b => b.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                        b.Author.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                        b.ISBN.Contains(query, StringComparison.OrdinalIgnoreCase));
     }
-
 }
