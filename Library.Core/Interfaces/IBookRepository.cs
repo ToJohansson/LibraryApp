@@ -9,7 +9,7 @@ namespace Library.Core.Interfaces;
 public interface IBookRepository
 {
     void AddBook(Book book);
-    void RemoveBook(string identifier);// titel eller ISBN
+    void RemoveBook(Book book);// titel eller ISBN
     IEnumerable<Book> GetAllBooks();
     IEnumerable<Book> Search(string query);
     Book? GetByISBN(string isbn);

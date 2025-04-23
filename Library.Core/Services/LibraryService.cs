@@ -17,13 +17,17 @@ public class LibraryService : ILibraryService
     }
     public void AddBook(string title, string author, string isbn, string category)
     {
-        // 1. Kontrollera om en bok med samma ISBN redan finns i repository
-        // 2. Om den inte finns:
-        //    a) Skapa ett nytt Book-objekt
-        //    b) Sätt IsAvailable = true
-        //    c) Lägg till boken i repository med _repository.AddBook(...)
-        // 3. Annars: kasta ett undantag eller ignorera beroende på logik
-        throw new NotImplementedException();
+
+        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author))
+        {
+            throw new ArgumentNullException("Title and author is needed.");
+        }
+        if (_repository.GetByISBN(isbn) is not null)
+        {
+            throw new ArgumentNullException("A book with this isb number already exists.");
+        }
+        var book = new Book(title, author, isbn, category);
+        _repository.AddBook(book);
     }
 
     public IEnumerable<Book> ListBooks(SortOrder sortOrder)
@@ -41,31 +45,62 @@ public class LibraryService : ILibraryService
     public void MarkAsBorrowed(string isbn)
     {
         // 1. Hämta boken från repository med ISBN
+        var book = _repository.GetByISBN(isbn);
         // 2. Om boken inte finns: kasta ett undantag eller gör inget
+        if (book == null)
+        {
+            throw new ArgumentNullException($"Book with isbn: {isbn} does not exists.");
+        }
         // 3. Om boken finns och är tillgänglig:
-        //    a) Sätt IsAvailable = false
+        if (book.IsAvailable)
+        {
+            //    a) Sätt IsAvailable = false
+            book.IsAvailable = false;
+        }
         //    b) Uppdatera boken i repository med _repository.Update(...)
-        throw new NotImplementedException();
+        _repository.Update(book);
     }
 
     public void MarkAsReturned(string isbn)
     {
         // 1. Hämta boken från repository med ISBN
+        var book = _repository.GetByISBN(isbn);
         // 2. Om boken inte finns: kasta ett undantag eller gör inget
+        if (book == null)
+        {
+            throw new ArgumentNullException($"Book with isb: {isbn} does not exsist.");
+        }
         // 3. Om boken finns:
         //    a) Sätt IsAvailable = true
+        book.IsAvailable = true;
         //    b) Uppdatera boken i repository
-        throw new NotImplementedException();
+        _repository.Update(book);
     }
 
     public void RemoveBook(string identifier)
     {
         // 1. Försök tolka identifier som ISBN först: _repository.GetByISBN(...)
+        var book = new Book();
+
+        var bookList = _repository.GetAllBooks();
+        foreach (var b in bookList)
+        {
+            if (identifier == b.Title || identifier == b.Author || identifier == b.ISBN)
+            {
+                book = b;
+                break;
+            }
+        }
+        var bookToRemove = bookList.FirstOrDefault(b => b.Title == identifier ||
+                                                        b.Author == identifier ||
+                                                        b.ISBN == identifier);
+
+
         // 2. Om boken finns, ta bort den
         // 3. Annars: sök bland alla böcker efter match på titel (case insensitive)
         // 4. Om en match hittas, ta bort den
         // 5. Om inget hittas: gör inget eller kasta undantag
-        throw new NotImplementedException();
+        _repository.RemoveBook(book);
     }
 
     IEnumerable<Book> ILibraryService.SearchBooks(string query)
