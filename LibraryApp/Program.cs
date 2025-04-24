@@ -1,17 +1,37 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Library.Core.Enums;
 using Library.Core.Interfaces;
 using Library.Core.Models;
 using Library.Core.Services;
+using Library.InMemory;
+using System.Text;
 
 Console.WriteLine("Library APP!");
 
-List<Book> books = new List<Book>();
-books.Add(new Book("test", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 2", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 3", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 4", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 5", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 6", "testson", "123123fdgdfg", "science"));
-books.Add(new Book("test 7", "testson", "123123fdgdfg", "science"));
+
+
+
+InMemoryBookRepository inMemoryBookRepository = new InMemoryBookRepository();
+SeedData.Initialize(inMemoryBookRepository);
+LibraryService libraryService = new LibraryService(inMemoryBookRepository);
+
+StringBuilder sb = new StringBuilder();
+SortOrder authorSort = SortOrder.Author;
+SortOrder TitleSort = SortOrder.Title;
+var allBooksSortByAuthor = libraryService.ListBooks(authorSort);
+var allBooksSortByTitle = libraryService.ListBooks(TitleSort);
+
+Console.WriteLine("All books sort by author");
+foreach (Book book in allBooksSortByAuthor)
+{
+    Console.WriteLine(book);
+}
+
+
+Console.WriteLine("All books sort by Title");
+foreach (Book book in allBooksSortByTitle)
+{
+    Console.WriteLine(book);
+}
 
 
