@@ -48,7 +48,8 @@ public class InMemoryBookRepository : IBookRepository
 
     public void Update(Book updatedBook)
     {
-        if (updatedBook != null) return;
+        if (updatedBook == null)
+            throw new ArgumentNullException(nameof(updatedBook), "Book to update cannot be null.");
 
         var existingBook = GetByISBN(updatedBook.ISBN);
         if (existingBook != null)

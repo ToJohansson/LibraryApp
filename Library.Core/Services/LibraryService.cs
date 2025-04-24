@@ -42,6 +42,11 @@ public class LibraryService : ILibraryService
         };
     }
 
+    public IEnumerable<Book> ListBooks()
+    {
+        return _repository.GetAllBooks();
+    }
+
     public void MarkAsBorrowed(string isbn)
     {
         // 1. Hämta boken från repository med ISBN
@@ -87,7 +92,6 @@ public class LibraryService : ILibraryService
         if (bookToRemove is null)
         {
             throw new ArgumentException($"No book was found with identifier: {identifier}");
-            // Eller returnera ett resultatobjekt om du inte vill kasta.
         }
         _repository.RemoveBook(bookToRemove);
     }
