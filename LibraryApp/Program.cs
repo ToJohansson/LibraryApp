@@ -25,13 +25,23 @@ Console.WriteLine("All books sort by author");
 foreach (Book book in allBooksSortByAuthor)
 {
     Console.WriteLine(book);
+    Console.WriteLine("");
+
 }
 
+Console.WriteLine("#############################");
+Console.WriteLine("#############################");
+Console.WriteLine("#############################");
+Console.WriteLine("#############################");
+Console.WriteLine("#############################");
+Console.WriteLine("#############################");
 
 Console.WriteLine("All books sort by Title");
 foreach (Book book in allBooksSortByTitle)
 {
     Console.WriteLine(book);
+    Console.WriteLine("");
+
 }
 
 

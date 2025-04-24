@@ -18,11 +18,19 @@ public record Book
     {
 
     }
-
     public string Title { get; set; }
     public string Author { get; set; }
     public string ISBN { get; set; }
     public string Category { get; set; }
     public bool IsAvailable { get; set; }
+
+    public override string ToString()
+    {
+        return $"Title: {Title}\n" +
+           $"Author: {Author}\n" +
+           $"ISBN: {ISBN}\n" +
+           $"Category: {Category}\n" +
+           $"Status: {(IsAvailable ? "Available" : "Checked Out")}";
+    }
 }
 
