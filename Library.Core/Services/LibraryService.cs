@@ -2,6 +2,7 @@
 using Library.Core.Interfaces;
 using Library.Core.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,16 +19,24 @@ public class LibraryService : ILibraryService
     public void AddBook(string title, string author, string isbn, string category)
     {
 
-        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author))
+        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(author) || string.IsNullOrWhiteSpace(isbn) || string.IsNullOrWhiteSpace(category))
         {
-            throw new ArgumentException("Title and author is needed.");
+            throw new ArgumentException("Title, author, isbn and category is needed.");
         }
         if (_repository.GetByISBN(isbn) is not null)
         {
-            throw new ArgumentException("A book with this isb number already exists.");
+            throw new ArgumentException("A book with this isbn number already exists.");
         }
         var book = new Book(title, author, isbn, category);
         _repository.AddBook(book);
+    }
+
+    public Book GetBook(string identifier)
+    {
+        return _repository.GetAllBooks()
+         .FirstOrDefault(b => b.Title.Contains(identifier, StringComparison.OrdinalIgnoreCase) ||
+                     b.Author.Contains(identifier, StringComparison.OrdinalIgnoreCase) ||
+                     b.ISBN.Contains(identifier, StringComparison.OrdinalIgnoreCase));
     }
 
     public IEnumerable<Book> ListBooks(SortOrder sortOrder)
@@ -96,7 +105,7 @@ public class LibraryService : ILibraryService
         _repository.RemoveBook(bookToRemove);
     }
 
-    IEnumerable<Book> ILibraryService.SearchBooks(string query)
+    public IEnumerable<Book> SearchBooks(string query)
     {
         return _repository.GetAllBooks()
             .Where(b => b.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||

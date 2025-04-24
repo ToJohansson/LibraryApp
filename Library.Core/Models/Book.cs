@@ -22,7 +22,7 @@ public record Book
     public string Author { get; set; }
     public string ISBN { get; set; }
     public string Category { get; set; }
-    public bool IsAvailable { get; set; }
+    public bool IsAvailable { get; set; } = true;
 
     public override string ToString()
     {

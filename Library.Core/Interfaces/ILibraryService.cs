@@ -14,6 +14,7 @@ public interface ILibraryService
     IEnumerable<Book> ListBooks(SortOrder sortOrder);
     IEnumerable<Book> ListBooks();
     IEnumerable<Book> SearchBooks(string query);
+    Book GetBook(string identifier);
     void MarkAsBorrowed(string isbn);
     void MarkAsReturned(string isbn);
 }

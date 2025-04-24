@@ -12,36 +12,20 @@ Console.WriteLine("Library APP!");
 
 
 InMemoryBookRepository inMemoryBookRepository = new InMemoryBookRepository();
-SeedData.Initialize(inMemoryBookRepository);
+//SeedData.Initialize(inMemoryBookRepository);
 LibraryService libraryService = new LibraryService(inMemoryBookRepository);
 
-StringBuilder sb = new StringBuilder();
-SortOrder authorSort = SortOrder.Author;
-SortOrder TitleSort = SortOrder.Title;
-var allBooksSortByAuthor = libraryService.ListBooks(authorSort);
-var allBooksSortByTitle = libraryService.ListBooks(TitleSort);
+libraryService.AddBook("hoppsan", "C", "1", "category");
+libraryService.AddBook("test", "B", "2", "category");
 
-Console.WriteLine("All books sort by author");
-foreach (Book book in allBooksSortByAuthor)
+libraryService.MarkAsBorrowed("1");
+foreach (var item in libraryService.ListBooks())
 {
-    Console.WriteLine(book);
-    Console.WriteLine("");
-
+    Console.WriteLine(item.IsAvailable + " " + item.Title);
 }
-
-Console.WriteLine("#############################");
-Console.WriteLine("#############################");
-Console.WriteLine("#############################");
-Console.WriteLine("#############################");
-Console.WriteLine("#############################");
-Console.WriteLine("#############################");
-
-Console.WriteLine("All books sort by Title");
-foreach (Book book in allBooksSortByTitle)
+libraryService.MarkAsReturned("1");
+foreach (var item in libraryService.ListBooks())
 {
-    Console.WriteLine(book);
-    Console.WriteLine("");
-
+    Console.WriteLine(item.IsAvailable + " " + item.Title);
 }
-
 
