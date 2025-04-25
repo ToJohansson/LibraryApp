@@ -112,4 +112,14 @@ public class LibraryService : ILibraryService
                         b.Author.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                         b.ISBN.Contains(query, StringComparison.OrdinalIgnoreCase));
     }
+
+    public void Update(string title, string author, string isbn, string category)
+    {
+        var oldBook = _repository.GetByISBN(isbn);
+        if (oldBook == null)
+            throw new ArgumentException($"Book with ISBN {isbn} does not exist.");
+
+        Book updatedBook = new Book(title, author, isbn, category);
+        _repository.Update(updatedBook);
+    }
 }

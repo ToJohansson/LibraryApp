@@ -143,5 +143,41 @@ public class LibraryServiceTests
         });
 
     }
+    [Fact]
+    public void Update_ShouldUpdateBookFields_WhenBookExists()
+    {
+        // Arrange
+        var isbn = "123";
+        var originalTitle = "Original Title";
+        var originalAuthor = "Original Author";
+        var originalCategory = "Original Category";
+        var updatedTitle = "New Title";
+        var updatedAuthor = "New Author";
+        var updatedCategory = "New Category";
+
+        _libraryService.AddBook(originalTitle, originalAuthor, isbn, originalCategory);
+
+        // Act
+        _libraryService.Update(updatedTitle, updatedAuthor, isbn, updatedCategory);
+
+        // Assert
+        var updatedBook = _libraryService.GetBook(isbn);
+        Assert.Equal(updatedTitle, updatedBook.Title);
+        Assert.Equal(updatedAuthor, updatedBook.Author);
+        Assert.Equal(updatedCategory, updatedBook.Category);
+        Assert.Equal(isbn, updatedBook.ISBN); // ISBN should be unchanged
+    }
+
+    [Fact]
+    public void Update_ShouldThrowArgumentException_WhenBookDoesNotExist()
+    {
+        // Arrange
+
+        // Act & Assert
+        var ex = Assert.Throws<ArgumentException>(() =>
+            _libraryService.Update("Title", "Author", "notfound-isbn", "Category")
+        );
+        Assert.Contains("Book with ISBN notfound-isbn does not exist.", ex.Message);
+    }
 
 }

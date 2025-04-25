@@ -49,7 +49,7 @@ public class InMemoryBookRepository : IBookRepository
     public void Update(Book updatedBook)
     {
         if (updatedBook == null)
-            throw new ArgumentNullException(nameof(updatedBook), "Book to update cannot be null.");
+            throw new ArgumentException($"Book with ISBN {updatedBook.ISBN} does not exist.");
 
         var existingBook = GetByISBN(updatedBook.ISBN);
         if (existingBook != null)
