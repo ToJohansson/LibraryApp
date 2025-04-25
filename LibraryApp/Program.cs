@@ -4,14 +4,14 @@ using Library.Core.Models;
 using Library.Core.Services;
 using Library.InMemory;
 using LibraryApp.Interfaces;
-using LibraryApp;
 using System.Text;
+using LibraryApp.AppControl;
 
 class Program
 {
     static void Main(string[] args)
     {
-        App app = new App();
+        var app = AppFactory.CreateApp();
         app.Run();
     }
 }

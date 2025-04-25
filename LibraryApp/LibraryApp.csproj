@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Library.InMemory\Library.InMemory.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-  </ItemGroup>
-
 </Project>

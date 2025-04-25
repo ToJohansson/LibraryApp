@@ -1,16 +1,20 @@
 ﻿using LibraryApp.Interfaces;
 using System;
-using Library.Core.Services;
+using LibraryApp.Handlers;
 
 namespace LibraryApp.Menues
 {
     public class Menu : IMenu
     {
-        private readonly LibraryService _libraryService;
+        private readonly BookManagementHandler _bookManagementHandler;
+        private readonly BookListingHandler _bookListingHandler;
+        private readonly BookBorrowingHandler _bookBorrowingHandler;
 
-        public Menu(LibraryService libraryService)
+        public Menu(BookManagementHandler bookManagementHandler, BookListingHandler bookListingHandler, BookBorrowingHandler bookBorrowingHandler)
         {
-            _libraryService = libraryService;
+            _bookManagementHandler = bookManagementHandler;
+            _bookListingHandler = bookListingHandler;
+            _bookBorrowingHandler = bookBorrowingHandler;
         }
 
         public void Display()
@@ -61,7 +65,7 @@ namespace LibraryApp.Menues
             Console.Write("Enter Category: ");
             var category = Console.ReadLine();
 
-            _libraryService.AddBook(title, author, isbn, category);
+            //_libraryService.AddBook(title, author, isbn, category);
             Console.WriteLine("Book added successfully!");
             Console.ReadKey();
         }
@@ -70,7 +74,7 @@ namespace LibraryApp.Menues
         {
             Console.Write("Enter Book ISBN to remove: ");
             var isbn = Console.ReadLine();
-            _libraryService.RemoveBook(isbn);
+            // _libraryService.RemoveBook(isbn);
             Console.WriteLine("Book removed successfully!");
             Console.ReadKey();
         }
@@ -78,24 +82,26 @@ namespace LibraryApp.Menues
         private void ListBooks()
         {
             Console.WriteLine("Listing all books...");
-            var books = _libraryService.ListBooks();
+            /* var books = _libraryService.ListBooks();
             foreach (var book in books)
             {
                 Console.WriteLine($"{book.Title} by {book.Author} (ISBN: {book.ISBN})");
             }
             Console.ReadKey();
+            */
         }
 
         private void SearchBooks()
         {
             Console.Write("Enter search query (title, author, or ISBN): ");
             var query = Console.ReadLine();
-            var books = _libraryService.SearchBooks(query);
-            foreach (var book in books)
-            {
-                Console.WriteLine($"{book.Title} by {book.Author} (ISBN: {book.ISBN})");
-            }
-            Console.ReadKey();
+            /* var books = _libraryService.SearchBooks(query);
+             foreach (var book in books)
+             {
+                 Console.WriteLine($"{book.Title} by {book.Author} (ISBN: {book.ISBN})");
+             }
+             Console.ReadKey();
+            */
         }
     }
 }
