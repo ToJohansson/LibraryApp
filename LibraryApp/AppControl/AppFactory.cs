@@ -13,7 +13,9 @@ internal class AppFactory
 {
     public static App CreateApp()
     {
+
         var repository = new InMemoryBookRepository();
+        SeedData.Initialize(repository); // add some data to work with
         var service = new LibraryService(repository);
 
         BookBorrowingHandler borrowingHandler = new BookBorrowingHandler(service);
