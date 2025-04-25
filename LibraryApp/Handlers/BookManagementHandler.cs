@@ -14,4 +14,48 @@ public class BookManagementHandler
     {
         _service = libraryService;
     }
+
+    //    Lägg till böcker i biblioteket.
+    public bool AddBook(string title, string author, string isbn, string category)
+    {
+        try
+        {
+            _service.AddBook(title, author, isbn, category);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    //  Ta bort böcker från biblioteket.
+    public bool RemoveBook(string identifier)
+    {
+        try
+        {
+            _service.RemoveBook(identifier);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    //  Uppdatera befintliga böcker.
+    public bool UpdateBook(string title, string author, string isbn, string category)
+    {
+        try
+        {
+            _service.Update(title, author, isbn, category);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+
+
+
 }

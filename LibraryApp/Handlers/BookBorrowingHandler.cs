@@ -13,4 +13,31 @@ public class BookBorrowingHandler
     {
         _service = libraryService;
     }
+
+    // mark book as borrowed
+    public bool BorrowBook(string isbn)
+    {
+        try
+        {
+            _service.MarkAsBorrowed(isbn);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    // mark book as returned
+    public bool ReturnBook(string isbn)
+    {
+        try
+        {
+            _service.MarkAsReturned(isbn);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }
