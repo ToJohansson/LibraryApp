@@ -17,4 +17,5 @@ public interface ILibraryService
     Book GetBook(string identifier);
     void MarkAsBorrowed(string isbn);
     void MarkAsReturned(string isbn);
+    void Update(Book book);
 }
