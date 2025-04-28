@@ -42,7 +42,8 @@ public static class Helpers
     {
         foreach (var book in books)
         {
-            Console.WriteLine(book);
+            Console.WriteLine("-------------------- \n" +
+                "" + book);
         }
         Console.ReadKey();
     }

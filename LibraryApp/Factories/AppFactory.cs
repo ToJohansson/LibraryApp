@@ -21,7 +21,9 @@ public class AppFactory
         BookListingHandler listingHandler = new BookListingHandler(service);
         BookManagementHandler managementHandler = new BookManagementHandler(service);
 
-        var menu = new Menu(managementHandler, listingHandler, borrowingHandler);
+        ReportExportHandler reportExportHandler = new ReportExportHandler(listingHandler);
+
+        var menu = new Menu(managementHandler, listingHandler, borrowingHandler, reportExportHandler);
         return new App(menu);
     }
 }

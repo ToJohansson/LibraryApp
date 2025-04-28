@@ -12,12 +12,14 @@ namespace LibraryApp.Menues
         private readonly BookManagementHandler _managementHandler;
         private readonly BookListingHandler _listingHandler;
         private readonly BookBorrowingHandler _borrowingHandler;
+        private readonly ReportExportHandler _reportExportHandler;
 
-        public Menu(BookManagementHandler bookManagementHandler, BookListingHandler bookListingHandler, BookBorrowingHandler bookBorrowingHandler)
+        public Menu(BookManagementHandler bookManagementHandler, BookListingHandler bookListingHandler, BookBorrowingHandler bookBorrowingHandler, ReportExportHandler reportExportHandler)
         {
             _managementHandler = bookManagementHandler;
             _listingHandler = bookListingHandler;
             _borrowingHandler = bookBorrowingHandler;
+            _reportExportHandler = reportExportHandler;
         }
         #region MAIN MENU:
 
@@ -31,7 +33,8 @@ namespace LibraryApp.Menues
                     "Remove Book",
                     "Update Book",
                     "Search Books",
-                    "Borrow and Return books"
+                    "Borrow and Return books",
+                    "Report borrowed books"
                 };
                 var option = Helpers.DisplayOptionsAndGetChoice("Welcome to the Library System", options);
 
@@ -52,6 +55,9 @@ namespace LibraryApp.Menues
                     case "5":
                         BoorowAnndReturnBooks();
                         break;
+                    case "6":
+                        ReportBorrowedBooks();
+                        break;
                     case "0":
                         return;
                     default:
@@ -61,6 +67,14 @@ namespace LibraryApp.Menues
             }
         }
         #endregion
+
+        #region Report Export Handler:
+        private void ReportBorrowedBooks()
+        {
+            Helpers.DisplayActionResult(_reportExportHandler.ExportBorrowedBooksReport(), "Report was successful", "Something went wrong");
+            
+        }
+        #endregion  
 
         #region MENU FOR/AND BOOK LISTING HANDLER METHODS
         private void SearchBooks()
