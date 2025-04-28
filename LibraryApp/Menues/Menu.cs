@@ -2,6 +2,8 @@
 using System;
 using LibraryApp.Handlers;
 using Library.Core.Enums;
+using LibraryApp.Utils;
+using System.Diagnostics.Metrics;
 
 namespace LibraryApp.Menues
 {
@@ -22,16 +24,15 @@ namespace LibraryApp.Menues
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Welcome to the Library System");
-                Console.WriteLine("1. Add Book");
-                Console.WriteLine("2. Remove Book");
-                Console.WriteLine("3. Update Book");
-                Console.WriteLine("4. Search Books");
-                Console.WriteLine("5. Borrow and Return books");
-                Console.WriteLine("0. Exit");
-                Console.Write("Please choose an option: ");
-                var option = Console.ReadLine();
+                var options = new List<string>
+                {
+                    "Add Book",
+                    "Remove Book",
+                    "Update Book",
+                    "Search Books",
+                    "Borrow and Return books"
+                };
+                var option = Helpers.DisplayOptionsAndGetChoice("Welcome to the Library System", options);
 
                 switch (option)
                 {
@@ -64,16 +65,14 @@ namespace LibraryApp.Menues
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Search Books");
-                Console.WriteLine("1. Sort books by Title or Author");
-                Console.WriteLine("2. Show all books");
-                Console.WriteLine("3. Search books with common naming");
-                Console.WriteLine("4. Search a specific Book");
-                Console.WriteLine("5. Return");
-                Console.Write("Please choose an option: ");
-                var option = Console.ReadLine();
-
+                var options = new List<string>
+                {
+                    "Sort books by Title or Author",
+                    "Show all books",
+                    "Search books with common naming",
+                    "Search a specific Book"
+                };
+                var option = Helpers.DisplayOptionsAndGetChoice("Search Books", options);
                 switch (option)
                 {
                     case "1":
@@ -88,10 +87,10 @@ namespace LibraryApp.Menues
                     case "4":
                         GetSingleBook();
                         break;
-                    case "5":
+                    case "0":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Helpers.InvalidOption();
                         break;
                 }
             }
@@ -99,8 +98,8 @@ namespace LibraryApp.Menues
 
         private void GetSingleBook()
         {
-            Console.Write("Enter ISBN: ");
-            string isbn = Console.ReadLine();
+            //string getIsbn = "Enter ISBN: ";
+            string isbn = Helpers.GetUserInputReturnAnswer("Enter ISBN: ");
             var book = _listingHandler.GetBook(isbn);
             Console.WriteLine((book == null ? $"No book with ISBN: [ {isbn} ] exists." : book));
             Console.ReadKey();
@@ -110,40 +109,48 @@ namespace LibraryApp.Menues
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Sort Books");
-                Console.WriteLine("1. Sort by Title");
-                Console.WriteLine("2. Sort by Author");
-
-                Console.WriteLine("0. Return");
-                Console.Write("Please choose an option: ");
-                var option = Console.ReadLine();
+                var options = new List<string>
+                {
+                    "Sort by Title",
+                    "Sort by Author"
+                };
+                var option = Helpers.DisplayOptionsAndGetChoice("Sort Books", options);
 
                 switch (option)
                 {
                     case "1":
-                        var booksTitle = _listingHandler.SortedBooks(SortOrder.Title);
-                        foreach (var b in booksTitle)
-                        {
-                            Console.WriteLine(b);
-                        }
-                        Console.ReadKey();
+                        SortByTitle();
                         break;
                     case "2":
-                        var booksAuthor = _listingHandler.SortedBooks(SortOrder.Author);
-                        foreach (var b in booksAuthor)
-                        {
-                            Console.WriteLine(b);
-                        }
-                        Console.ReadKey();
+                        SortByAuthor();
                         break;
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Helpers.InvalidOption();
                         break;
                 }
             }
+        }
+
+        private void SortByAuthor()
+        {
+            var booksAuthor = _listingHandler.SortedBooks(SortOrder.Author);
+            foreach (var b in booksAuthor)
+            {
+                Console.WriteLine(b);
+            }
+            Console.ReadKey();
+        }
+
+        private void SortByTitle()
+        {
+            var booksTitle = _listingHandler.SortedBooks(SortOrder.Title);
+            foreach (var b in booksTitle)
+            {
+                Console.WriteLine(b);
+            }
+            Console.ReadKey();
         }
 
         private void ListBooks()
@@ -162,9 +169,8 @@ namespace LibraryApp.Menues
 
         private void SearchBooksByQuery()
         {
-            Console.Write("Enter search query (title, author, or ISBN): ");
-            var query = Console.ReadLine();
-            var books = _listingHandler.BooksWithSearchString(query);
+            var books = _listingHandler.BooksWithSearchString(
+                Helpers.GetUserInputReturnAnswer("Enter search query (title, author, or ISBN): "));
             foreach (var book in books)
             {
                 Console.WriteLine($"{book.Title} by {book.Author} (ISBN: {book.ISBN})");
@@ -176,44 +182,31 @@ namespace LibraryApp.Menues
         #region Book management handler
         private void AddBook()
         {
-            Console.Write("Enter Title: ");
-            var title = Console.ReadLine();
-            Console.Write("Enter Author: ");
-            var author = Console.ReadLine();
-            Console.Write("Enter ISBN: ");
-            var isbn = Console.ReadLine();
-            Console.Write("Enter Category: ");
-            var category = Console.ReadLine();
-
-            Console.WriteLine(_managementHandler.AddBook(title, author, isbn, category)
+            var title = Helpers.GetUserInputReturnAnswer("Enter Title: ");
+            var author = Helpers.GetUserInputReturnAnswer("Enter Author: ");
+            var isbn = Helpers.GetUserInputReturnAnswer("Enter ISBN: ");
+            var category = Helpers.GetUserInputReturnAnswer("Enter Category: ");
+            Helpers.DisplayMessageAndWait(_managementHandler.AddBook(title, author, isbn, category)
                 ? "Book added successfully!"
                 : "Something went wrong.");
-            Console.ReadKey();
         }
         private void RemoveBook()
         {
-            Console.Write("Enter Book ISBN to remove: ");
-            var isbn = Console.ReadLine();
-            Console.WriteLine(_managementHandler.RemoveBook(isbn)
+            var isbn = Helpers.GetUserInputReturnAnswer("Enter Book ISBN to remove: ");
+            Helpers.DisplayMessageAndWait(_managementHandler.RemoveBook(isbn)
                 ? "Book removed successfully!"
                 : "Something went wrong.");
-            Console.ReadKey();
         }
         private void UpdateBook()
         {
-            Console.Write("Enter ISBN to update book: ");
-            var isbn = Console.ReadLine();
-            Console.Write("Enter Title: ");
-            var title = Console.ReadLine();
-            Console.Write("Enter Author: ");
-            var author = Console.ReadLine();
-            Console.Write("Enter Category: ");
-            var category = Console.ReadLine();
+            var isbn = Helpers.GetUserInputReturnAnswer("Enter ISBN to update book: ");
+            var title = Helpers.GetUserInputReturnAnswer("Enter Title: ");
+            var author = Helpers.GetUserInputReturnAnswer("Enter Author: ");
+            var category = Helpers.GetUserInputReturnAnswer("Enter Category: ");
 
-            Console.WriteLine(_managementHandler.UpdateBook(title, author, isbn, category)
+            Helpers.DisplayMessageAndWait(_managementHandler.UpdateBook(title, author, isbn, category)
                  ? "Book updated successfully!"
                  : "Something went wrong.");
-            Console.ReadKey();
         }
         #endregion
 
@@ -222,14 +215,12 @@ namespace LibraryApp.Menues
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("1. Borrow book");
-                Console.WriteLine("2. Return book");
-
-                Console.WriteLine("0. return");
-                Console.Write("Please choose an option: ");
-                var option = Console.ReadLine();
-
+                var options = new List<string>
+                {
+                    "Borrow book",
+                    "Return book"
+                };
+                var option = Helpers.DisplayOptionsAndGetChoice("Borrow or Return Book", options);
                 switch (option)
                 {
                     case "1":
@@ -241,7 +232,7 @@ namespace LibraryApp.Menues
                     case "0":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Helpers.InvalidOption();
                         break;
                 }
             }
