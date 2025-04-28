@@ -3,7 +3,7 @@ using Library.InMemory;
 using LibraryApp.Interfaces;
 using LibraryApp.Menues;
 
-namespace LibraryApp.AppControl;
+namespace LibraryApp;
 
 public class App
 {

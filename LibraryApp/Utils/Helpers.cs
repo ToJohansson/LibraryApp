@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace LibraryApp.Utils;
 public static class Helpers
 {
-    public static string GetUserInputReturnAnswer(string prompt)
+    public static string GetUserInput(string prompt)
     {
         Console.Write(prompt);
         return Console.ReadLine();
@@ -45,4 +46,20 @@ public static class Helpers
         }
         Console.ReadKey();
     }
+    public static void DisplayActionResult(bool success, string successMessage, string failureMessage)
+    {
+        if (success)
+            DisplayMessageAndWait(successMessage);
+        else
+            DisplayMessageAndWait(failureMessage);
+    }
+    public static void GetBookAndDisplay(string isbn, Func<string, Book> getBookFunc)
+    {
+        var book = getBookFunc(isbn);
+        if (book == null)
+            DisplayMessageAndWait($"No book with ISBN: [ {isbn} ] exists.");
+        else
+            DisplayMessageAndWait(book.ToString());
+    }
+
 }
