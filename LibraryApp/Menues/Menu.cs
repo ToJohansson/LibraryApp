@@ -102,7 +102,7 @@ namespace LibraryApp.Menues
             Console.Write("Enter ISBN: ");
             string isbn = Console.ReadLine();
             var book = _listingHandler.GetBook(isbn);
-            Console.WriteLine(book);
+            Console.WriteLine((book == null ? $"No book with ISBN: [ {isbn} ] exists." : book));
             Console.ReadKey();
         }
 
