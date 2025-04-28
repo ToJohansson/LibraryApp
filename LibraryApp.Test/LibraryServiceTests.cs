@@ -92,6 +92,40 @@ public class LibraryServiceTests
         Assert.Equal("B", sorted[1].Author);
         Assert.Equal("A", sorted[2].Author);
     }
+    [Fact]
+    public void GetBook_ShouldReturnBook_WhenIsbnMatchesExactly()
+    {
+        // Arrange
+
+        var expectedBook = new Book
+        {
+            Title = "Test Book",
+            Author = "Author Name",
+            ISBN = "ABC123",
+            Category = "Fiction"
+        };
+
+        _libraryService.AddBook(expectedBook.Title, expectedBook.Author, expectedBook.ISBN, expectedBook.Category);
+
+        // Act
+        var result = _libraryService.GetBook("ABC123");
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(expectedBook.Title, result.Title);
+        Assert.Equal(expectedBook.ISBN, result.ISBN);
+    }
+
+    [Fact]
+    public void GetBook_ShouldReturnNull_WhenIsbnDoesNotExist()
+    {
+
+        // Act
+        var result = _libraryService.GetBook("DOESNOTEXIST");
+
+        // Assert
+        Assert.Null(result);
+    }
 
     // MarkAsBorrowed
     [Fact]
