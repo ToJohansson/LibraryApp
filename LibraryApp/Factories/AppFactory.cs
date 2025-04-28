@@ -9,11 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LibraryApp.AppControl;
-internal class AppFactory
+public class AppFactory
 {
     public static App CreateApp()
     {
-
         var repository = new InMemoryBookRepository();
         SeedData.Initialize(repository); // add some data to work with
         var service = new LibraryService(repository);
