@@ -34,7 +34,7 @@ public class LibraryService : ILibraryService
     public Book GetBook(string identifier)
     {
         return _repository.GetAllBooks()
-         .FirstOrDefault(b => b.ISBN.Contains(identifier, StringComparison.OrdinalIgnoreCase));
+         .FirstOrDefault(b => b.ISBN.Equals(identifier, StringComparison.OrdinalIgnoreCase));
     }
 
     public IEnumerable<Book> ListBooks(SortOrder sortOrder)
