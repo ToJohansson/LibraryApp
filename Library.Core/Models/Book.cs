@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 namespace Library.Core.Models;
 public record Book
 {
-    public Book(string title, string author, string isbn, string category)
-    {
-        Title = title;
-        Author = author;
-        ISBN = isbn;
-        Category = category;
-    }
+
     public Book()
     {
 
@@ -22,8 +16,15 @@ public record Book
     public string Author { get; set; }
     public string ISBN { get; set; }
     public string Category { get; set; }
-    public bool IsAvailable { get; set; } = true;
-
+    public bool IsAvailable { get; set; }
+    public Book(string title, string author, string isbn, string category, bool isAvaiable = true)
+    {
+        Title = title;
+        Author = author;
+        ISBN = isbn;
+        Category = category;
+        IsAvailable = isAvaiable;
+    }
     public override string ToString()
     {
         return $"Title: {Title}\n" +
