@@ -19,10 +19,6 @@ Bygg projektet (Build).
 Kör programmet (dotnet run i terminalen eller tryck på "Start" i din IDE).
 
 Du kommer att mötas av huvudmenyn:
-
-bash
-Copy
-Edit
 Welcome to the Library System
 1. Add Book
 2. Remove Book
