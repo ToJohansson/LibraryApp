@@ -8,7 +8,26 @@ Söka och sortera bland böcker.
 Låna och lämna tillbaka böcker.
 
 All konsolhantering är samlad i en Utils/Helpers-klass för att göra programmet mer enhetligt och lättare att underhålla.
+## Installation av nödvändiga paket
 
+För att konfigurera loggning i projektet använder vi **Microsoft.Extensions.Logging** och **Microsoft.Extensions.Logging.Console**. Följande NuGet-paket krävs för att använda loggning:
+
+### Paket som behövs:
+
+1. **Microsoft.Extensions.Logging**
+   - Detta paket tillhandahåller loggningsfunktionalitet i applikationen.
+   - Installera det via NuGet:
+     ```bash
+     dotnet add package Microsoft.Extensions.Logging
+     ```
+
+2. **Microsoft.Extensions.Logging.Console**
+   - Detta paket tillhandahåller möjligheten att logga till konsolen.
+   - Installera det via NuGet:
+     ```bash
+     dotnet add package Microsoft.Extensions.Logging.Console
+     ```
+     
 🚀 Hur man kör programmet
 Klona projektet eller ladda ner koden till din dator.
 
