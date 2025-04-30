@@ -72,7 +72,7 @@ namespace LibraryApp.Menues
         private void ReportBorrowedBooks()
         {
             Helpers.DisplayActionResult(_reportExportHandler.ExportBorrowedBooksReport(), "Report was successful", "Something went wrong");
-            
+
         }
         #endregion  
 
@@ -193,7 +193,7 @@ namespace LibraryApp.Menues
             var title = Helpers.GetUserInput("Enter Title: ");
             var author = Helpers.GetUserInput("Enter Author: ");
             var category = Helpers.GetUserInput("Enter Category: ");
-            var result = _managementHandler.AddBook(title, author, isbn, category);
+            var result = _managementHandler.UpdateBook(title, author, isbn, category);
             Helpers.DisplayActionResult(result, "Book updated successfully!", "Something went wrong.");
         }
         #endregion

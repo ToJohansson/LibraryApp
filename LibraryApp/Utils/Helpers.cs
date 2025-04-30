@@ -27,10 +27,6 @@ public static class Helpers
         return Console.ReadLine();
     }
 
-    public static void DisplayMessage(string message)
-    {
-        Console.WriteLine(message);
-    }
     public static void DisplayMessageAndWait(string message)
     {
         Console.WriteLine(message);

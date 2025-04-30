@@ -1,4 +1,5 @@
 ﻿using Library.Core.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace LibraryApp.Handlers;
 public class BookManagementHandler
 {
     private readonly LibraryService _service;
+    private readonly ILogger<BookManagementHandler> _logger;
 
-    public BookManagementHandler(LibraryService libraryService)
+    public BookManagementHandler(LibraryService libraryService, ILogger<BookManagementHandler> logger)
     {
         _service = libraryService;
+        _logger = logger;
     }
 
     //    Lägg till böcker i biblioteket.
@@ -21,10 +24,12 @@ public class BookManagementHandler
         try
         {
             _service.AddBook(title, author, isbn, category);
+            _logger.LogInformation("new book added with isbn {0}", isbn);
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError("Error: {0}", ex.Message);
             return false;
         }
     }
@@ -34,10 +39,12 @@ public class BookManagementHandler
         try
         {
             _service.RemoveBook(identifier);
+            _logger.LogInformation("Book removed by {0}", identifier);
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             return false;
         }
     }
@@ -47,10 +54,12 @@ public class BookManagementHandler
         try
         {
             _service.Update(title, author, isbn, category);
+            _logger.LogInformation("Updated successful");
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex.Message);
             return false;
         }
     }
