@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LibraryApp.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace LibraryApp.Handlers
 {
     public class ReportExportHandler
     {
         private readonly BookListingHandler _listingHandler;
-
-        public ReportExportHandler(BookListingHandler bookListingHandler)
+        private readonly ILogger<ReportExportHandler> _logger;
+        public ReportExportHandler(BookListingHandler bookListingHandler, ILogger<ReportExportHandler> logger)
         {
             _listingHandler = bookListingHandler;
+            _logger = logger;
         }
 
         /*
@@ -32,7 +35,7 @@ namespace LibraryApp.Handlers
                 // Steg 2: Kontrollera om det finns några utlånade böcker
                 if (!borrowedBooks.Any())
                 {
-                    Console.WriteLine("No books has been checked out.");
+                    _logger.LogInformation("No books has been checked out.");
                     return false;
                 }
 
@@ -52,7 +55,7 @@ namespace LibraryApp.Handlers
             catch (Exception ex)
             {
                 // Steg 7: Hantera eventuella fel
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex.Message);
                 return false;
             }
         }
@@ -79,13 +82,13 @@ namespace LibraryApp.Handlers
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
-                    Console.WriteLine("Folder 'report' has been created.");
+                    _logger.LogInformation("Folder path [ {0} ] has been created.", folderPath);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 // Hantera fel om mappen inte kan skapas
-                Console.WriteLine($"Error: {e.Message}");
+                _logger.LogError(ex.Message);
             }
         }
         private string BuildReportContent(IEnumerable<Book> borrowedBooks)
@@ -122,13 +125,13 @@ namespace LibraryApp.Handlers
 
                 // Skriv innehållet till filen
                 File.WriteAllText(filePath, reportContent);
-                Console.WriteLine($"Report created at: {filePath}");
+                _logger.LogInformation($"Report created at: {filePath}");
                 return true;
             }
             catch (Exception ex)
             {
                 // Hantera eventuella fel vid filskrivning
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex.Message);
                 return false;
             }
         }
