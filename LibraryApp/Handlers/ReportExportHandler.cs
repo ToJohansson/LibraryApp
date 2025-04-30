@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LibraryApp.Utils;
 
 namespace LibraryApp.Handlers
 {
@@ -32,7 +33,7 @@ namespace LibraryApp.Handlers
                 // Steg 2: Kontrollera om det finns några utlånade böcker
                 if (!borrowedBooks.Any())
                 {
-                    Console.WriteLine("No books has been checked out.");
+                    Helpers.DisplayMessage("No books has been checked out.");
                     return false;
                 }
 
@@ -52,7 +53,7 @@ namespace LibraryApp.Handlers
             catch (Exception ex)
             {
                 // Steg 7: Hantera eventuella fel
-                Console.WriteLine($"Error: {ex.Message}");
+                Helpers.DisplayMessage($"Error: {ex.Message}");
                 return false;
             }
         }
@@ -79,13 +80,13 @@ namespace LibraryApp.Handlers
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
-                    Console.WriteLine("Folder 'report' has been created.");
+                    Helpers.DisplayMessage($"Folder path [ {folderPath} ] has been created.");
                 }
             }
             catch (Exception e)
             {
                 // Hantera fel om mappen inte kan skapas
-                Console.WriteLine($"Error: {e.Message}");
+                Helpers.DisplayMessage($"Error: {e.Message}");
             }
         }
         private string BuildReportContent(IEnumerable<Book> borrowedBooks)
@@ -122,13 +123,13 @@ namespace LibraryApp.Handlers
 
                 // Skriv innehållet till filen
                 File.WriteAllText(filePath, reportContent);
-                Console.WriteLine($"Report created at: {filePath}");
+                Helpers.DisplayMessage($"Report created at: {filePath}");
                 return true;
             }
             catch (Exception ex)
             {
                 // Hantera eventuella fel vid filskrivning
-                Console.WriteLine($"Error: {ex.Message}");
+                Helpers.DisplayMessage($"Error: {ex.Message}");
                 return false;
             }
         }
