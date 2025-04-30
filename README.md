@@ -28,7 +28,7 @@ För att konfigurera loggning i projektet använder vi **Microsoft.Extensions.Lo
      dotnet add package Microsoft.Extensions.Logging.Console
      ```
      
-🚀## Hur man kör programmet
+## 🚀 Hur man kör programmet
 Klona projektet eller ladda ner koden till din dator.
 
 Öppna projektet i din IDE (Visual Studio, Rider eller VS Code).
@@ -48,7 +48,7 @@ Welcome to the Library System
 Please choose an option:
 Navigera genom menyerna genom att skriva siffrorna och följa instruktionerna.
 
-🛠 ## Projektstruktur
+## 🛠 Projektstruktur
 LibraryApp/Interfaces/IMenu.cs – Interface för menyer.
 
 LibraryApp/Menues/Menu.cs – Huvudmeny och undermenyer.
@@ -61,7 +61,7 @@ LibraryApp/Handlers/BookBorrowingHandler.cs – Låna och returnera böcker.
 
 LibraryApp/Utils/Helpers.cs – All konsolutskrift och användarinput (DRY-princip).
 
-✅ ## Vad som är testat och klart
+## ✅ Vad som är testat och klart
 Menysystem – Flera nivåer av menyer fungerar som förväntat.
 
 Bokhantering – Lägga till, ta bort och uppdatera böcker testat och fungerar.
